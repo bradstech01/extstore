@@ -1,0 +1,39 @@
+body {
+    background-color: #FFD9D8;
+}
+
+.extension-page {
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+
+.extension-page-header {
+  background-color: #7F0400;
+  height: 150px;
+  min-width: 570px;
+  padding: 20px;
+  color: white;
+}
+
+.extension-page-footer {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  background-color: #7F0400;
+  height:50px;
+  width: 100%;
+  padding:20px;
+  color: white;
+}
+
+
+.extension {
+  height: 750px;
+  width: 550px;
+  margin: 10px;
+  display: inline-block;
+  color: slategray;
+  background: #F5F5F5;
+  border: 1px solid black;
+}
