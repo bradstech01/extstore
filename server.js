@@ -63,6 +63,7 @@ router.route('/extensions')
   extension.description = req.body.description;
   extension.name = req.body.name;
   extension.version = req.body.version;
+  extension.live = req.body.live;
 
   extension.save(function(err) {
     if (err)
@@ -79,12 +80,11 @@ router.route('/extensions/:extension_id')
   Extension.findById(req.params.extension_id, function(err, extension) {
     if (err)
     res.send(err);
-    //setting the new author and description to whatever was changed. If
-    //nothing was changed we will not alter the field.
     (req.body.author) ? extension.author = req.body.author : null;
     (req.body.description) ? extension.description = req.body.description : null;
     (req.body.name) ? extension.name = req.body.name : null;
     (req.body.version) ? extension.version = req.body.version : null;
+    (req.body.live) ? extension.live = req.body.live : null;
 
     //save changes
     extension.save(function(err) {

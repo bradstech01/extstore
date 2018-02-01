@@ -6,25 +6,31 @@ class Extension extends Component {
   constructor(props){
     super(props);
     this.state = {
-      extensionName: this.props.extensionData.name,
-      extensionAuthor: this.props.extensionData.author,
-      extensionDescription: this.props.extensionData.description,
-      extensionVersion: this.props.extensionData.version,
-      extensionId: this.props.extensionData._id
+      name: this.props.extensionData.name,
+      author: this.props.extensionData.author,
+      description: this.props.extensionData.description,
+      version: this.props.extensionData.version,
+      id: this.props.extensionData._id,
+      live: this.props.extensionData.live
     };
   }
 
   render() {
+    //these extensions are floating out there and we haven't signed off on them yet... hide 'em!
+    if (this.state.live !== true) return null;
+
     return (
-      <div className="extension">
-        <h1>{this.state.extensionName}</h1>
-        <img width="256px" src={"/database/"+this.state.extensionId+"/icon.png"} alt="uhh"></img>
-        <p>{"v"+this.state.extensionVersion}</p>
-        <p>{this.state.extensionAuthor}</p>
-        <p>{this.state.extensionDescription}</p>
-        <a href={"/database/"+this.state.extensionId+"/dist.crx"}>Get it for chrome</a>
-        <br/>
-        <a href={"/database/"+this.state.extensionId+"/dist.xpi"}>Get it for firefox</a>
+      <div className="col-md-6">
+        <h1>{this.state.name}</h1>
+        <img width="256px" src={require("../database/"+this.state.id+"/icon.png")} alt="uhh"></img>
+        <p>{"v"+this.state.version}</p>
+        <p>{this.state.author}</p>
+        <p>{this.state.description}</p>
+        <div className="btn-group">
+          <a href={"/database/"+this.state.id+"/dist.crx"} className="btn btn-link btn-lg" role="button">Get it for chrome</a>
+          <br/>
+          <a href={"/database/"+this.state.id+"/dist.xpi"} className="btn btn-link btn-lg" role="button">Get it for firefox</a>
+        </div>
       </div>
     );
   }
@@ -46,8 +52,10 @@ class ExtensionList extends Component {
     }
 
     return (
-      <div className="ExtensionList">
-        {extensionRenderArray}
+      <div className="container">
+        <div className="row">
+          {extensionRenderArray}
+        </div>
       </div>
     );
   }
@@ -56,9 +64,16 @@ class ExtensionList extends Component {
 class ExtensionPage extends Component {
   constructor(props){
     super(props);
-    this.state = { data: [] };
+    this.state = {
+      data: [],
+      showModal:false
+    };
     this.loadExtensionsFromServer = this.loadExtensionsFromServer.bind(this);
     this.handleExtensionSubmit = this.handleExtensionSubmit.bind(this);
+  }
+
+  handleExtensionSubmit(Extension) {
+    //add POST request (note - no need for this at the moment)
   }
 
   loadExtensionsFromServer() {
@@ -68,29 +83,32 @@ class ExtensionPage extends Component {
     })
   }
 
-  handleExtensionSubmit(Extension) {
-    //add POST request (note - no need for this at the moment)
-  }
-
   componentDidMount() {
     this.loadExtensionsFromServer();
     setInterval(this.loadExtensionsFromServer, this.props.pollInterval);
   }
 
   render() {
-    console.log(this.state.data);
-
     return (
-      <div className="extension-page">
-        <div className="content">
-          <header className="extension-page-header">
-            <h1>Extension Store</h1>
-          </header>
+      <div>
+        <div className="extension-page">
+          <nav className="navbar navbar-inverse">
+            <div className="container-fluid">
+              <div className="navbar-header">
+                <a className="navbar-brand">The Extension Place</a>
+              </div>
+              <ul className="nav navbar-nav navbar-right">
+                <li>Site Feedback</li>
+                <li><button className="btn btn-dflt">Submit Extension</button></li>
+              </ul>
+            </div>
+          </nav>
+
           <ExtensionList data={this.state.data}/>
+          <footer className="extension-page-footer">
+          &copy; 2018
+          </footer>
         </div>
-        <footer className="extension-page-footer">
-        &copy; 2018
-        </footer>
       </div>
     );
   }

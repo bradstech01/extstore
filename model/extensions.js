@@ -9,6 +9,7 @@ const ExtensionsSchema = new Schema({
  description: String,
  name: String,
  version: String,
+ live: Boolean,
 });
 
 //export our module to use in server.js
