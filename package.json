@@ -2,10 +2,10 @@
   "name": "extstore",
   "version": "1.0.0",
   "scripts": {
-    "client": "cd client && yarn start",
+    "client": "yarn start",
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "start": "cd client && start",
+    "start": "react-scripts start",
     "start-dev": "nf start -p 3000"
   },
   "dependencies": {
@@ -20,5 +20,7 @@
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
-  }
+  },
+  "license": "UNLICENSED",
+  "private": true
 }

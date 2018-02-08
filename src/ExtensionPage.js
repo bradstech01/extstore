@@ -13,23 +13,44 @@ class Extension extends Component {
       id: this.props.extensionData._id,
       live: this.props.extensionData.live
     };
+    this.loadCrxFromServer = this.loadCrxFromServer.bind(this);
+    this.loadXpiFromServer = this.loadXpiFromServer.bind(this);
+
+  }
+
+  loadCrxFromServer() {
+    window.open('http://localhost:3100/db/crx/'+ this.state.id);
+  }
+
+  loadXpiFromServer() {
+    window.open('http://localhost:3100/db/xpi/'+ this.state.id);
   }
 
   render() {
     //these extensions are floating out there and we haven't signed off on them yet... hide 'em!
     if (this.state.live !== true) return null;
-
     return (
       <div className="col-md-6">
-        <h1>{this.state.name}</h1>
-        <img width="256px" src={require("../database/"+this.state.id+"/icon.png")} alt="uhh"></img>
-        <p>{"v"+this.state.version}</p>
-        <p>{this.state.author}</p>
-        <p>{this.state.description}</p>
-        <div className="btn-group">
-          <a href={"/database/"+this.state.id+"/dist.crx"} className="btn btn-link btn-lg" role="button">Get it for chrome</a>
-          <br/>
-          <a href={"/database/"+this.state.id+"/dist.xpi"} className="btn btn-link btn-lg" role="button">Get it for firefox</a>
+        <div className="extension">
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="title">
+                <h1>{this.state.name}</h1>
+              </div>
+              <div className="icon">
+                <img width="128px" src={require("../database/"+this.state.id+"/icon.png")} alt="uhh"></img>
+              </div>
+              <p>{"v"+this.state.version}</p>
+              <p>{this.state.author}</p>
+            </div>
+            <div className="col-sm-6">
+              <div className="description">
+                <p>{this.state.description}</p>
+              </div>
+            </div>
+          <button onClick={this.loadCrxFromServer} className="btn btn-success btn-lg btn-chrome">Get it for chrome</button>
+          <button onClick={this.loadXpiFromServer} className="btn btn-success btn-lg btn-firefox">Get it for firefox</button>
+          </div>
         </div>
       </div>
     );
@@ -93,21 +114,16 @@ class ExtensionPage extends Component {
       <div>
         <div className="extension-page">
           <nav className="navbar navbar-inverse">
-            <div className="container-fluid">
-              <div className="navbar-header">
-                <a className="navbar-brand">The Extension Place</a>
-              </div>
-              <ul className="nav navbar-nav navbar-right">
-                <li>Site Feedback</li>
-                <li><button className="btn btn-dflt">Submit Extension</button></li>
-              </ul>
+            <div className="navbar-header">
+              <a className="navbar-brand">The Extension Place</a>
             </div>
+            <ul className="nav navbar-right">
+              <li><button className="btn btn-dflt">Site Feedback</button></li>
+              <li><button className="btn btn-dflt">Submit Extension</button></li>
+            </ul>
           </nav>
 
           <ExtensionList data={this.state.data}/>
-          <footer className="extension-page-footer">
-          &copy; 2018
-          </footer>
         </div>
       </div>
     );

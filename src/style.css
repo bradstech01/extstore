@@ -1,27 +1,26 @@
 body {
-    background-color: #FFD9D8;
+    background-color: #ebe9e7;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
 }
 
 nav {
-  background-color: #7F0400;
+  background-color: #A19F9E;
   color: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  height: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-form {
-  padding: 5px;
+h1 {
+  font-size: 32px;
 }
 
-.modal {
-  width: 350px;
-  position: fixed;
-  margin: 5% auto;
-  border-radius: 5px;
-}
-
-.modal-content {
-    background-color: #ececec;
-    border: 1px solid #bdc3c7;
-    outline: 0;
+.navbar-header {
+  top: 0;
 }
 
 .extension-page {
@@ -30,29 +29,52 @@ form {
   width: 100%;
 }
 
-.extension-page-header {
-  background-color: #7F0400;
-  min-width: 570px;
-  color: white;
-}
-
-.extension-page-footer {
-  position: fixed;
-  left: 0px;
-  bottom: 0px;
-  background-color: #7F0400;
-  width: 100%;
-  padding:15px;
-  color: white;
-}
-
-
 .extension {
-  height: 650px;
-  width: 550px;
-  margin: 10px;
-  display: inline-block;
-  color: slategray;
+  min-height: 650px;
+  margin-top: 50px;
   background: #F5F5F5;
-  border: 1px solid black;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 5px;
+}
+
+.description {
+  margin: 30px;
+}
+
+.icon {
+  margin: 30px;
+}
+
+.title {
+  margin: 30px;
+}
+
+.btn {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.btn:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.btn-success {
+  width: 225px;
+  height: 75px;
+  font-size: 25px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.btn-chrome {
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+}
+
+.btn-firefox {
+  position: absolute;
+  bottom: 5%;
+  left: 5%;
 }

@@ -1,14 +1,17 @@
 'use strict'
 const express = require('express');
-const fs = require('fs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Extension = require('./model/extensions');
+const path = require('path');
+//
+//  MONGODB API
+//
 
 const app = express();
 const router = express.Router();
 const port = process.env.PORT || 3001;
-const url = process.env.MONGOLAB_URI;
+//const url = process.env.MONGOLAB_URI;
 
 //MongoDB configuration
 mongoose.connect(url);
@@ -17,7 +20,31 @@ mongoose.connect(url);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//To prevent errors from Cross Origin Resource Sharing (damnit Chrome), we will set
+app.use(express.static(path.join(__dirname,"public")));
+
+app.get('/db/:type/:id', function(req, res, next){
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept,Access-Control-Request-Method, Access-Control-Request-Headers');
+  //and remove cacheing so we get the most recent data
+  res.setHeader('Cache-Control', 'no-cache');
+
+  //set mime-types and route request based on type of file we want to get
+
+  if (req.params.type === 'crx') {
+    res.setHeader('Content-Type', 'application/x-chrome-extension');
+    res.setHeader('Content-Disposition', 'inline; filename: dist.crx');
+    res.download(__dirname + "/public/database/" + req.params.id +'/dist.crx');
+  }
+  else if (req.params.type === 'xpi') {
+    res.setHeader('Content-Type', 'application/x-xpinstall');
+    res.setHeader('Content-Disposition', 'inline; filename: dist.xpi');
+    res.download(__dirname + "/public/database/" + req.params.id +'/dist.xpi','dist.xpi');
+  }
+});
+
+//To prevent errors from Cross Origin Resource Sharing, we will set
 //our headers to allow CORS with middleware like so:
 app.use(function(req, res, next) {
  res.setHeader('Access-Control-Allow-Origin', '*');
@@ -27,18 +54,6 @@ app.use(function(req, res, next) {
  //and remove cacheing so we get the most recent data
   res.setHeader('Cache-Control', 'no-cache');
   next();
-});
-
-//now we can set the route path & initialize the API
-router.get('/', function(req, res) {
- res.json({ message: 'API Initialized!'});
-});
-
-
-//… removed for brevity
-//now we can set the route path & initialize the API
-router.get('/', function(req, res) {
- res.json({ message: 'API Initialized!'});
 });
 
 //adding the /extensions route to our /api router
