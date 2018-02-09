@@ -1,7 +1,7 @@
 body {
     background-color: #ebe9e7;
-    margin: 0;
-    padding: 0;
+    margin: -30px;
+    padding: 30px;
     font-family: sans-serif;
 }
 
@@ -30,15 +30,21 @@ h1 {
 }
 
 .extension {
-  min-height: 650px;
   margin-top: 50px;
   background: #F5F5F5;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   border-radius: 5px;
+  min-height: 650px;
+}
+
+.col-md-6 {
+  min-width: 550px;
 }
 
 .description {
   margin: 30px;
+  overflow-y: auto;
+  max-height: 500px;
 }
 
 .icon {

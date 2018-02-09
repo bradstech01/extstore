@@ -94,7 +94,7 @@ class ExtensionPage extends Component {
   }
 
   handleExtensionSubmit(Extension) {
-    //add POST request (note - no need for this at the moment)
+    //add POST request (note - no need for this at the moment - will need when implementing "submit extension" modal)
   }
 
   loadExtensionsFromServer() {
