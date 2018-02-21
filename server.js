@@ -3,6 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Extension = require('./model/extensions');
+const multer = require('multer');
+const uuidv4 = require('uuid/v4');
 const path = require('path');
 //
 //  MONGODB API
@@ -11,8 +13,7 @@ const path = require('path');
 const app = express();
 const router = express.Router();
 const port = process.env.PORT || 3001;
-
-//const url = process.env.MONGOLAB_URI;
+const url = process.env.MONGOLAB_URI;
 
 //MongoDB configuration
 mongoose.connect(url);
@@ -21,6 +22,8 @@ mongoose.connect(url);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//EXTENSION DELIVERY
+//This section of code deals with delivering the extension files
 app.use(express.static(path.join(__dirname,"public")));
 
 app.get('/db/:type/:id', function(req, res, next){
@@ -31,7 +34,7 @@ app.get('/db/:type/:id', function(req, res, next){
   //and remove cacheing so we get the most recent data
   res.setHeader('Cache-Control', 'no-cache');
 
-  //set mime-types and route request based on type of file we want to get
+  //set mime-types and filepath request based on type of file we want to get
 
   if (req.params.type === 'crx') {
     res.setHeader('Content-Type', 'application/x-chrome-extension');
@@ -45,14 +48,14 @@ app.get('/db/:type/:id', function(req, res, next){
   }
 });
 
-//To prevent errors from Cross Origin Resource Sharing, we will set
-//our headers to allow CORS with middleware like so:
+//EXTENSIONS api
+//This section of code deals with actually making requests to the MongoDB server
 app.use(function(req, res, next) {
- res.setHeader('Access-Control-Allow-Origin', '*');
- res.setHeader('Access-Control-Allow-Credentials', 'true');
- res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
- res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
- //and remove cacheing so we get the most recent data
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+  //and remove cacheing so we get the most recent data
   res.setHeader('Cache-Control', 'no-cache');
   next();
 });
@@ -119,6 +122,7 @@ router.route('/extensions/:extension_id')
   res.json({ message: 'Extension has been deleted' })
   })
 });
+
 
 //Use our router configuration when we call /api
 app.use('/api', router);
