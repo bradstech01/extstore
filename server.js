@@ -3,17 +3,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Extension = require('./model/extensions');
-const multer = require('multer');
-const uuidv4 = require('uuid/v4');
 const path = require('path');
-//
-//  MONGODB API
-//
 
 const app = express();
 const router = express.Router();
 const port = process.env.PORT || 3001;
-const url = process.env.MONGOLAB_URI;
+
+//const url = process.env.MONGOLAB_URI;
 
 //MongoDB configuration
 mongoose.connect(url);
@@ -22,31 +18,8 @@ mongoose.connect(url);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//EXTENSION DELIVERY
-//This section of code deals with delivering the extension files
+//Configures the express API to use the folder called public relative to current directory (where server.js lives)
 app.use(express.static(path.join(__dirname,"public")));
-
-app.get('/db/:type/:id', function(req, res, next){
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept,Access-Control-Request-Method, Access-Control-Request-Headers');
-  //and remove cacheing so we get the most recent data
-  res.setHeader('Cache-Control', 'no-cache');
-
-  //set mime-types and filepath request based on type of file we want to get
-
-  if (req.params.type === 'crx') {
-    res.setHeader('Content-Type', 'application/x-chrome-extension');
-    res.setHeader('Content-Disposition', 'inline; filename: dist.crx');
-    res.download(__dirname + "/public/database/" + req.params.id +'/dist.crx');
-  }
-  else if (req.params.type === 'xpi') {
-    res.setHeader('Content-Type', 'application/x-xpinstall');
-    res.setHeader('Content-Disposition', 'inline; filename: dist.xpi');
-    res.download(__dirname + "/public/database/" + req.params.id +'/dist.xpi','dist.xpi');
-  }
-});
 
 //EXTENSIONS api
 //This section of code deals with actually making requests to the MongoDB server
@@ -91,10 +64,9 @@ router.route('/extensions')
     });
  });
 
-//Adding a route to a specific extension based on the database ID
+//Specifies a route to a specific extension based on the database ID
 router.route('/extensions/:extension_id')
-//The put method gives us the chance to update our extension based on
-//the ID passed to the route
+//The put method gives us the chance to update our extension based on the ID passed in
 .put(function(req, res) {
   Extension.findById(req.params.extension_id, function(err, extension) {
     if (err)
@@ -115,7 +87,7 @@ router.route('/extensions/:extension_id')
 })
 //delete method for removing a extension from our database
 .delete(function(req, res) {
-  //selects the extension by its ID, then removes it.
+  //selects the extension by its ID, then removes it
   Extension.remove({ _id: req.params.extension_id }, function(err, extension) {
   if (err)
   res.send(err);
@@ -123,6 +95,22 @@ router.route('/extensions/:extension_id')
   })
 });
 
+//Handles file retrieval
+router.route('/files/:type/:id')
+
+.get(function(req, res){
+  //set mime-types and filepath request based on type of file we want to get
+  if (req.params.type === 'crx') {
+    res.setHeader('Content-Type', 'application/x-chrome-extension');
+    res.setHeader('Content-Disposition', 'inline; filename: dist.crx');
+    res.download(__dirname + "/public/database/" + req.params.id +'/dist.crx');
+  }
+  else if (req.params.type === 'xpi') {
+    res.setHeader('Content-Type', 'application/x-xpinstall');
+    res.setHeader('Content-Disposition', 'inline; filename: dist.xpi');
+    res.download(__dirname + "/public/database/" + req.params.id +'/dist.xpi','dist.xpi');
+  }
+});
 
 //Use our router configuration when we call /api
 app.use('/api', router);

@@ -1,3 +1,4 @@
+/* General styling */
 body {
     background-color: #F5F5F5;
     margin-top: -30px;
@@ -6,6 +7,7 @@ body {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
+/* Nav/top banner styling*/
 nav {
   background-color: #A19F9E;
   color: white;
@@ -14,7 +16,10 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
 
+.navbar-brand {
+  padding-top: 3px;
 }
 
 h1 {
@@ -22,13 +27,27 @@ h1 {
   font-family: 'Teko', sans-serif;
 }
 
+/* Submission form/its contents (contained in a modal) */
+
 .submission-form {
   text-align: center;
+  padding: 30px;
 }
 
-.navbar-brand {
-  padding-top: 3px;
+.form-group {
+  margin: auto;
+  width: 100%;
 }
+
+.form-control {
+  margin-bottom: 5px;
+}
+
+textarea {
+  resize: none;
+}
+
+/* Styling for the "extension page" which contains the extensions and the bulk of the content */
 
 .extension-page {
   text-align: center;
@@ -36,6 +55,8 @@ h1 {
   width: 100%;
   min-width: 525px;
 }
+
+/* Styling overrides for bootstrap container (the 'middle piece' of the page) */
 
 .container {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -51,6 +72,8 @@ h1 {
   border-radius: 5px;
   min-height: 650px;
 }
+
+/* Styling for items within each Extension*/
 
 .col-md-6 {
   min-width: 450px;
@@ -70,6 +93,8 @@ h1 {
   margin: 30px;
   font-family: 'Teko', sans-serif;
 }
+
+/* Styling for buttons used throughout the app */
 
 .btn {
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -100,4 +125,10 @@ h1 {
   position: absolute;
   bottom: 5%;
   left: 5%;
+}
+
+.btn-group {
+  margin-top: 30px;
+  padding-left: 125px;
+  width: 540px;
 }

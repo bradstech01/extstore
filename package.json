@@ -17,7 +17,10 @@
     "marked": "^0.3.12",
     "mongoose": "^4.13.10",
     "nodemon": "^1.14.11",
-    "react-bootstrap": "^0.32.1"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react": "^16.2.0",
+    "react-scripts": "^1.1.1"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
